@@ -1,11 +1,9 @@
-package com.alivebox.patchviewer.models
+package com.alivebox.patchviewer.models.util
 
 /**
- * Created with IntelliJ IDEA.
- * User: cleandro
+ * User: ljcp
  * Date: 27/05/13
  * Time: 03:43 PM
- * To change this template use File | Settings | File Templates.
  */
 class FromFilesToFilesLines {
 

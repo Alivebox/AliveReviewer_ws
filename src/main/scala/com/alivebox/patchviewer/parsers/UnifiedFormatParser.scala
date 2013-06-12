@@ -2,9 +2,8 @@ package com.alivebox.patchviewer.parsers
 
 import scala.collection.mutable.ArrayBuffer
 import com.alivebox.patchviewer.models._
-import com.alivebox.patchviewer.models.Hunk
-import com.alivebox.patchviewer.models.Diff
-import com.alivebox.patchviewer.models.DiffFile
+import com.alivebox.patchviewer.models.mapper.{HunkLine, DiffFile, Diff, Hunk}
+import com.alivebox.patchviewer.models.util.FromFilesToFilesLines
 
 /**
  * User: ljcp
@@ -38,7 +37,7 @@ object UnifiedFormatParser{
        return tmpFromFilesToFilesLines
     }
 
-    var tmpData = argLine.split("\\W+");
+    var tmpData = argLine.split("\\W+")
     tmpFromFilesToFilesLines.fromFileLineStart = tmpData(1).toInt
     tmpFromFilesToFilesLines.fromFileLineEnd = tmpData(2).toInt
     tmpFromFilesToFilesLines.toFileLineStart = tmpData(3).toInt
@@ -76,7 +75,7 @@ object UnifiedFormatParser{
           indxFrom = indexesData.fromFileLineStart
           indxTo = indexesData.toFileLineStart
         }else{
-          tmpHunkLine = new HunkLine
+          tmpHunkLine = new HunkLine()
           val tmpTypeAndNewLine = getHunkTypeAndRemoveItFromLine(tmpLine)
           tmpHunkLine.text =  tmpTypeAndNewLine(1).replace("\t", "    ")
           tmpHunkLine.hunkType = tmpTypeAndNewLine(0)
@@ -97,12 +96,12 @@ object UnifiedFormatParser{
             indxTo += 1
             indxFrom += 1
           }
-          if(indxTo <= (indexesData.toFileLineStart + indexesData.toFileLineEnd) ){
+          if(indxTo <= indexesData.toFileLineStart + indexesData.toFileLineEnd ){
             tmpHunk.hunkLines += tmpHunkLine
           }
         }
 
-        if((i+1) == argFileLines.length){
+        if(i+1 == argFileLines.length){
           hunks += tmpHunk
         }
 
@@ -110,7 +109,7 @@ object UnifiedFormatParser{
 
       } catch {
         case ex: Exception =>{
-          println("Ohh Noooooooo")
+          println("Setting Hunks Exception:" + ex.getStackTrace)
         }
 
       }
@@ -140,12 +139,12 @@ object UnifiedFormatParser{
   def fileLinesToFilesLines(argFileLines:List[String]):ArrayBuffer[ArrayBuffer[String]] = {
     val tmpIterator = argFileLines.iterator
     var tmpDiffFilesLines = new ArrayBuffer[ArrayBuffer[String]]()
-    var foundIndx = 0;
+    var foundIndx = 0
     var tmpDiffFileLine = new ArrayBuffer[String]()
     while(tmpIterator.hasNext){
       val tmpLine = tmpIterator.next()
       if(tmpLine.startsWith("---")){
-        foundIndx = foundIndx + 1;
+        foundIndx = foundIndx + 1
         if(foundIndx > 1){
           foundIndx = 1
           tmpDiffFilesLines += tmpDiffFileLine

@@ -9,7 +9,7 @@ import net.liftweb.util.Props
  * User: ljcp
  * Date: 6/4/13
  * Time: 4:00 PM
- * To change this template use File | Settings | File Templates.
+ * Database Connection Manager for mysql
  */
 object DBVendor extends ConnectionManager {
     // Force load the driver
